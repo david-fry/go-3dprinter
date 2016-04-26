@@ -1,4 +1,4 @@
-package main
+package printer
 
 import (
 	"errors"
@@ -9,10 +9,6 @@ import (
 
 	"github.com/tarm/serial"
 )
-
-var gcode []string
-var counter int
-var complete int
 
 //Printer is a connection to a reprap or similar printer
 type Printer struct {
@@ -68,34 +64,4 @@ func (p *Printer) SendCommand(g string) error {
 	}
 
 	return nil
-}
-
-func main() {
-	fmt.Println("Connecting to Printer...")
-	p := Connect("COM3", 115200)
-
-	fmt.Println("Moving Extruder...")
-	err := p.SendCommand("G28")
-	err = p.SendCommand("G1 Z20")
-	err = p.SendCommand("G1 Y100")
-	err = p.SendCommand("G1 X100")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Heating Extruder...")
-	err = p.SendCommand("M109 S100")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Cooling Extruder...")
-	err = p.SendCommand("M109 S100")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
 }
